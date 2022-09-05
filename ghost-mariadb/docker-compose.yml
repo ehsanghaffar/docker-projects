@@ -1,0 +1,43 @@
+version: '3.3'
+services:
+
+  ghost:
+    image: ghost:latest
+    restart: always
+    depends_on:
+      - db
+    env_file: .env
+    volumes:
+      - ./content:/var/lib/ghost/content
+      - ./config.production.json:/var/lib/ghost/config.production.json
+
+
+  db:
+    image: mariadb:latest
+    restart: always
+    ports:
+      - 3316:3306
+    env_file: .env
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+
+  phpmyadmin:
+    depends_on:
+      - db
+    ports:
+      - '8980:80'
+    image: phpmyadmin
+    restart: always
+    env_file: .env
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    depends_on:
+      - ghost
+    ports:
+      - "8989:80"
+    volumes:
+      - /usr/share/nginx/html:/usr/share/nginx/html
+      - ./nginx:/etc/nginx/conf.d

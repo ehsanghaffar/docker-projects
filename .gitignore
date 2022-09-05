@@ -38,3 +38,7 @@ Thumbs.db
 .env
 nginx.conf
 nginx-wp-mariadb/config/site-data/*
+ghost-mariadb/content
+ghost-mariadb/mysql
+ghost-mariadb/nginx/defualt.conf
+ghost-mariadb/config.production.json
