@@ -41,6 +41,8 @@ services:
     env_file: .env
     networks:
       db:
+    volumes:
+      - ./config/site-data:/var/www/html/wp-content
 
   nginx:
     image: nginx:alpine
@@ -48,6 +50,5 @@ services:
       - 8088:80
     networks:
       db:
-
     volumes:
-      - ./nginx:/etc/nginx/conf.d
+      - ./config/nginx:/etc/nginx/conf.d

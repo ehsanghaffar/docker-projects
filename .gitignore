@@ -36,3 +36,5 @@
 ehthumbs.db
 Thumbs.db
 .env
+nginx.conf
+nginx-wp-mariadb/config/site-data/*
