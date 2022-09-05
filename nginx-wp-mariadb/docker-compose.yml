@@ -1,0 +1,53 @@
+version: "3.9"
+
+volumes:
+  mariadb:
+    driver: local
+
+networks:
+  db:
+    driver: bridge
+
+services:
+  mariadb:
+    # We use a mariadb image which supports both amd64 & arm64 architecture
+    image: mariadb:10.7
+    volumes:
+      - mariadb:/var/lib/mysql
+    restart: always
+    env_file: .env
+    ports:
+      - "33060:3306"
+    expose:
+      - 33060
+    networks:
+      db:
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 40001:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      db:
+
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 8090:80
+    restart: always
+    env_file: .env
+    networks:
+      db:
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 8088:80
+    networks:
+      db:
+
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
